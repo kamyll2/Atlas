@@ -20,6 +20,7 @@ using System.IO;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Platform;
 using OpenTK;
+using OpenTK.Input;
 
 
 #endregion
@@ -32,6 +33,9 @@ namespace Skeleton
         static float angle = 0.0f;
         List<Vector3> vertices = new List<Vector3>();
         List<Model> Models = new List<Model>();
+        int modelToShow = 0;
+        int displayType = 1;
+        MouseHelper mouseHelper = new MouseHelper();
 
         #region --- Constructor ---
 
@@ -69,8 +73,10 @@ namespace Skeleton
 
         void glControl_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F12)
-                glControl.GrabScreenshot().Save("screenshot.png");
+            if (e.KeyCode == Keys.A)
+            {
+                displayType = displayType == 0 ? 1 : 0;
+            }
         }
 
         #endregion
@@ -144,14 +150,30 @@ namespace Skeleton
 
         private void Render()
         {
-            Matrix4 lookat = Matrix4.LookAt(0, 5, 5, 0, 0, 0, 0, 1, 0);
+            Matrix4 lookat = Matrix4.LookAt(0, 0, 9, 0, -1, 0, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref lookat);
             GL.Scale(0.1, 0.1, 0.1);
-            GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
-            angle += 1.5f;
+            //GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
+            angle += 0.5f;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            MouseState mouse = Mouse.GetState();
+
+            mouseHelper.updateMouseParams(mouse);
+
+            textBox1.Text = mouse.Wheel.ToString();
+            
+            //matM=glm::translate(matM,glm::vec3(0.0,0.0,odleglosc));
+
+            GL.Translate(0.0F, 0.0F, mouseHelper.mouseWHEELstate);
+
+            GL.Rotate(mouseHelper.rotX, 0.0F, 1.0F, 0.0F);
+            GL.Rotate(mouseHelper.rotY, 1.0F, 0.0F, 0.0F);
+            //matM=glm::rotate(matM,rotX,glm::vec3(0.0,1.0,0.0));
+	        //matM=glm::rotate(matM,rotY,glm::vec3(1.0,0.0,0.0));
+
 
             DrawCube();
 
@@ -164,9 +186,20 @@ namespace Skeleton
 
         private void DrawCube()
         {
-            foreach (Model x in Models)
+            if (displayType == 0)
             {
-                x.drawModel(vertices);
+                foreach (Model x in Models)
+                {
+                    x.drawModel(vertices);
+                }
+            }
+            else
+            {
+                if (modelToShow >= Models.Count)
+                {
+                    modelToShow = 0;
+                }
+                Models[modelToShow].drawModel(vertices);
             }
         }
 
@@ -196,7 +229,7 @@ namespace Skeleton
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            modelToShow++;
         }
 
         public void readObjVertices(string path)
@@ -231,6 +264,11 @@ namespace Skeleton
 
             }
             file.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            displayType = displayType==0 ? 1:0;
         }
     }
 }
