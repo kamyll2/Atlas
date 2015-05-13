@@ -21,16 +21,17 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Platform;
 using OpenTK;
 
+
 #endregion
 
-namespace Examples.WinForms
+namespace Skeleton
 {
     //[Example("Simple GLControl Game Loop", ExampleCategory.OpenTK, "GLControl", 2, Documentation = "GLControlGameLoop")]
     public partial class GameLoopForm : Form
     {
         static float angle = 0.0f;
         List<Vector3> vertices = new List<Vector3>();
-        List<int> faces = new List<int>();
+        List<Model> Models = new List<Model>();
 
         #region --- Constructor ---
 
@@ -146,9 +147,9 @@ namespace Examples.WinForms
             Matrix4 lookat = Matrix4.LookAt(0, 5, 5, 0, 0, 0, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref lookat);
-
+            GL.Scale(0.1, 0.1, 0.1);
             GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
-            angle += 0.2f;
+            angle += 1.5f;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -163,17 +164,10 @@ namespace Examples.WinForms
 
         private void DrawCube()
         {
-            GL.Begin(BeginMode.Triangles);
-
-            GL.Color3(Color.Silver);
-
-            foreach (int x in faces)
+            foreach (Model x in Models)
             {
-                //Console.WriteLine("face\t" + x);
-                GL.Vertex3(vertices[x-1]);
+                x.drawModel(vertices);
             }
-
-            GL.End();
         }
 
         #endregion
@@ -192,7 +186,7 @@ namespace Examples.WinForms
                 // Get the title and category  of this example using reflection.
                 //ExampleAttribute info = ((ExampleAttribute)example.GetType().GetCustomAttributes(false)[0]);
                 //example.Text = String.Format("OpenTK | {0} {1}: {2}", info.Category, info.Difficulty, info.Title);
-                example.readObjVertices("..\\..\\Models\\skeleton.obj");
+                example.readObjVertices("..\\..\\Models\\Skeleton3.obj");
                 
                 example.ShowDialog();
             }
@@ -207,28 +201,32 @@ namespace Examples.WinForms
 
         public void readObjVertices(string path)
         {
+            List<int> tempFaces=null;
+
             StreamReader file = new StreamReader(path);
             while (!file.EndOfStream)
             {
                 string temp = file.ReadLine();
                 string[] temp2 = temp.Split(' ');
-                if (temp2[0] == "v")
+                if (temp2[0] == "o")
                 {
-                    Vector3 x = new Vector3((float)System.Convert.ChangeType(temp2[1],typeof(float)), 
-                                            (float)System.Convert.ChangeType(temp2[2],typeof(float)), 
-                                            (float)System.Convert.ChangeType(temp2[3],typeof(float)));
+                    Model tempModel = new Model(temp2[1]);
+                    Models.Add(tempModel);
+                    tempFaces = Models[Models.Count - 1].faces;
+                }
+                else if (temp2[0] == "v")
+                {
+                    Vector3 x = new Vector3((float)System.Convert.ChangeType(temp2[1], typeof(float)),
+                                            (float)System.Convert.ChangeType(temp2[2], typeof(float)),
+                                            (float)System.Convert.ChangeType(temp2[3], typeof(float)));
                     vertices.Add(x);
-                    
+
                 }
                 else if (temp2[0] == "f")
                 {
-                    for (int i = 1; i <= 3; i++)
-                    {
-                        string[] temp3 = temp2[i].Split('/');
-                        faces.Add(System.Convert.ToInt32(temp3[0]));
-                        //faces.Add(System.Convert.ToInt32(temp3[1]));
-                        //faces.Add(System.Convert.ToInt32(temp3[2]));
-                    }
+                    tempFaces.Add(System.Convert.ToInt32(temp2[1]));
+                    tempFaces.Add(System.Convert.ToInt32(temp2[2]));
+                    tempFaces.Add(System.Convert.ToInt32(temp2[3]));
                 }
 
             }

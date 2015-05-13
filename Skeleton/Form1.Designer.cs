@@ -1,4 +1,4 @@
-﻿namespace Examples.WinForms
+﻿namespace Skeleton
 {
     partial class GameLoopForm
     {
