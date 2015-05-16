@@ -199,14 +199,14 @@ namespace Skeleton
 
         private void Render()
         {
-            Matrix4 matV = Matrix4.LookAt(0, 0, 9, 0, -1, 0, 0, 1, 0);
+            Matrix4 matV = Matrix4.LookAt(0, 0, 30, 0, -1, 0, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref matV);
             
             //GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
             angle += 0.5f;
             
-            Matrix4 matP = Matrix4.Perspective(50.0F,glControl.Width/glControl.Height,1.0F,50.0F);
+            Matrix4 matP = Matrix4.Perspective(-50.0F,glControl.Width/glControl.Height,1.0F,50.0F);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -214,7 +214,7 @@ namespace Skeleton
 
             mouseHelper.updateMouseParams(mouse);
 
-            textBox1.Text = mouse.Wheel.ToString();
+            boneNameENG.Text = mouse.Wheel.ToString();
             
             //matM=glm::translate(matM,glm::vec3(0.0,0.0,odleglosc));
             //GL.MatrixMode(MatrixMode.Projection);
@@ -226,7 +226,7 @@ namespace Skeleton
                 matM = matM * Matrix4.Rotate(new Vector3(1.0F, 0.0F, 0.0F), 0.05f*mouseHelper.rotY);
                 matM = matM * Matrix4.Rotate(new Vector3(0.0F, 1.0F, 0.0F), 0.05f * mouseHelper.rotX);
                 //matM = matM * Matrix4.Translation(0.0f, 0.0f, 0.1F * mouseHelper.mouseWHEELstate);
-                matM = matM * Matrix4.CreateTranslation(0.0f, 0.0f, 0.1f*mouseHelper.mouseWHEELstate);
+                matM = matM * Matrix4.CreateTranslation(0.0f, 0.0f, 0.3f*mouseHelper.mouseWHEELstate);
 
 
                 shader.SetVariable("type1", (float)displayType);
