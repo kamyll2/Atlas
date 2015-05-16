@@ -37,6 +37,10 @@ namespace Skeleton
         int displayType = 1;
         MouseHelper mouseHelper = new MouseHelper();
 
+        Shader shader;
+        string vertexShader;
+        string fragmentShader;
+
         #region --- Constructor ---
 
         public GameLoopForm()
@@ -64,11 +68,24 @@ namespace Skeleton
 
             GL.ClearColor(Color.MidnightBlue);
             GL.Enable(EnableCap.DepthTest);
-
+            
             Application.Idle += Application_Idle;
 
             // Ensure that the viewport and projection matrix are set correctly.
             glControl_Resize(glControl, EventArgs.Empty);
+
+            //glEnable(GL_LIGHTING);
+            //glEnable(GL_LIGHT0);
+            //glEnable(GL_DEPTH_TEST);
+
+            GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Light0);
+            GL.Enable(EnableCap.DepthTest);
+
+
+            vertexShader = System.IO.File.ReadAllText("..\\..\\Shaders\\vshader.txt");
+            fragmentShader = System.IO.File.ReadAllText("..\\..\\Shaders\\fshader.txt");
+            shader = new Shader(vertexShader, fragmentShader);
         }
 
         void glControl_KeyUp(object sender, KeyEventArgs e)
@@ -86,7 +103,7 @@ namespace Skeleton
         protected override void OnClosing(CancelEventArgs e)
         {
             Application.Idle -= Application_Idle;
-
+            Shader.Bind(null);
             base.OnClosing(e);
         }
 
@@ -150,12 +167,14 @@ namespace Skeleton
 
         private void Render()
         {
-            Matrix4 lookat = Matrix4.LookAt(0, 0, 9, 0, -1, 0, 0, 1, 0);
+            Matrix4 matV = Matrix4.LookAt(0, 0, 9, 0, -1, 0, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref lookat);
-            GL.Scale(0.1, 0.1, 0.1);
+            GL.LoadMatrix(ref matV);
+            
             //GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
             angle += 0.5f;
+            
+            Matrix4 matP = Matrix4.Perspective(50.0F,glControl.Width/glControl.Height,1.0F,50.0F);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -166,15 +185,30 @@ namespace Skeleton
             textBox1.Text = mouse.Wheel.ToString();
             
             //matM=glm::translate(matM,glm::vec3(0.0,0.0,odleglosc));
+            //GL.MatrixMode(MatrixMode.Projection);
+
+            Matrix4 matM = Matrix4.Identity;
+            
+            GL.Scale(0.1, 0.1, 0.1);
+            matM = matM * Matrix4.Scale(0.1F,0.1F,0.1F);
 
             GL.Translate(0.0F, 0.0F, mouseHelper.mouseWHEELstate);
-
+            matM = matM * Matrix4.Translation(0.0F, 0.0F, mouseHelper.mouseWHEELstate);
+            
             GL.Rotate(mouseHelper.rotX, 0.0F, 1.0F, 0.0F);
+            matM = matM * Matrix4.Rotate(new Vector3(0.0F, 1.0F, 0.0F),mouseHelper.rotX);
+            
             GL.Rotate(mouseHelper.rotY, 1.0F, 0.0F, 0.0F);
+            matM = matM * Matrix4.Rotate(new Vector3(1.0F, 0.0F, 0.0F), mouseHelper.rotY);
             //matM=glm::rotate(matM,rotX,glm::vec3(0.0,1.0,0.0));
 	        //matM=glm::rotate(matM,rotY,glm::vec3(1.0,0.0,0.0));
 
-
+            
+            shader.SetVariable("V", matV);
+            shader.SetVariable("P", matP);
+            shader.SetVariable("M", matM);
+            Shader.Bind(shader);
+            
             DrawCube();
 
             glControl.SwapBuffers();
