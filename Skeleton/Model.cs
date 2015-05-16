@@ -51,8 +51,75 @@ namespace Skeleton
 
     class Model
     {
+        public static int DEFAULT_TEX;
+        public static int SELECTED_TEX;
+        public System.Drawing.Color color;
+        public bool isSelected = false;
+
+        int[] vao=new int[1];
+        int bufVertices; //Uchwyt na bufor VBO przechowujšcy tablicę wsp. wierzch
+        //GLuint bufColors;  //Uchwyt na bufor VBO przechowujšcy tablicę kolorów
+        int bufNormals; //Uchwyt na bufor VBO przechowujšcy tablicę wektorów norm.
+        int bufTexCoords;
+        public int tex0;
+        public int tex1;
+        float[] vertices;
+        float[] normals;
+        float[] texCoords;
+        int vertexCount;
+
         public string name;
         public List<int> faces;
+
+        /*void setupVBO()
+        {
+            this->bufVertices = makeBuffer(this->vertices, this->vertexCount, sizeof(float) * 4); //Współrzędne wierzchołków
+            //	bufColors=makeBuffer(colors, vertexCount, sizeof(float)*4);//Kolory wierzchołków
+            this->bufNormals = makeBuffer(this->normals, this->vertexCount, sizeof(float) * 4);//Wektory normalne wierzchołków
+            this->bufTexCoords = makeBuffer(this->texCoords, vertexCount, sizeof(float) * 2);//Wektory normalne wierzchołków
+        }*/
+        public void setupVBO()
+        {
+            bufVertices = makeBuffer(vertices, vertexCount, sizeof(float) * 4);
+            bufNormals = makeBuffer(normals, vertexCount, sizeof(float) * 4);
+            bufTexCoords = makeBuffer(texCoords, vertexCount, sizeof(float) * 2);
+        }
+
+        /*void setupVAO()
+        {
+            //Wygeneruj uchwyt na VAO i zapisz go do zmiennej globalnej
+            glGenVertexArrays(1, &(this->vao));
+
+            //Uaktywnij nowo utworzony VAO
+            glBindVertexArray(this->vao);
+
+            assignVBOtoAttribute("vertex", this->bufVertices, 4); //"vertex" odnosi się do deklaracji "in vec4 vertex;" w vertex shaderze
+            //	assignVBOtoAttribute("color",bufColors,4); //"color" odnosi się do deklaracji "in vec4 color;" w vertex shaderze
+            assignVBOtoAttribute("normal", this->bufNormals, 4); //"normal" odnosi się do deklaracji "in vec4 normal;" w vertex shaderze
+            assignVBOtoAttribute("texCoord", bufTexCoords, 2); //"texCoord" odnosi się do deklaracji "in vec2 texCoord;" w vertex shaderze
+            glBindVertexArray(0);
+        }*/
+        public void setupVAO(Shader shaderProgram)
+        {
+            GL.GenVertexArrays(1, vao);
+            GL.BindVertexArray(vao[0]);
+            assignVBOtoAttribute("vertex", bufVertices, 4,shaderProgram);
+            assignVBOtoAttribute("normal", bufNormals, 4, shaderProgram);
+            assignVBOtoAttribute("texCoord", bufTexCoords, 2, shaderProgram);
+            GL.BindVertexArray(0);
+        }
+
+        public void freeVBO()
+        {
+            GL.DeleteBuffer(bufVertices);
+            GL.DeleteBuffer(bufNormals);
+            GL.DeleteBuffer(bufTexCoords);
+        }
+
+        public void freeVAO()
+        {
+            GL.DeleteVertexArray(vao[0]);
+        }
 
         public Model()
         {
@@ -65,18 +132,161 @@ namespace Skeleton
             faces = new List<int>();
         }
 
-        public void drawModel(List<Vector3> vertices)
+        /*GLuint makeBuffer(void* data, int vertexCount, int vertexSize)
         {
+            GLuint handle;
+
+            glGenBuffers(1, &handle);//Wygeneruj uchwyt na Vertex Buffer Object (VBO), który będzie zawierał tablicę danych
+            glBindBuffer(GL_ARRAY_BUFFER, handle);  //Uaktywnij wygenerowany uchwyt VBO 
+            glBufferData(GL_ARRAY_BUFFER, vertexCount * vertexSize, data, GL_STATIC_DRAW);//Wgraj tablicę do VBO
+
+            return handle;
+        }*/
+        public int makeBuffer(float[] data, int vertexCount, int vertexSize)
+        {
+            int[] handle = new int[1];
+            GL.GenBuffers(1, handle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, handle[0]);
+            GL.BufferData(BufferTarget.ArrayBuffer, (System.IntPtr)(vertexCount*vertexSize), data, BufferUsageHint.StaticDraw);
+            return handle[0];
+        }
+
+        /*void assignVBOtoAttribute(char* attributeName, GLuint bufVBO, int variableSize)
+        {
+            GLuint location = shaderProgram->getAttribLocation(attributeName); //Pobierz numery slotów dla atrybutu
+            glBindBuffer(GL_ARRAY_BUFFER, bufVBO);  //Uaktywnij uchwyt VBO 
+            glEnableVertexAttribArray(location); //Włšcz używanie atrybutu o numerze slotu zapisanym w zmiennej location
+            glVertexAttribPointer(location, variableSize, GL_FLOAT, GL_FALSE, 0, NULL); //Dane do slotu location majš być brane z aktywnego VBO
+        }*/
+        public void assignVBOtoAttribute(string attributeName, int bufVBO, int variableSize, Shader shaderProgram)
+        {
+            int location = shaderProgram.GetAttribLocation(attributeName);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, bufVBO);
+            GL.EnableVertexAttribArray(location);
+            GL.VertexAttribPointer(location, variableSize, VertexAttribPointerType.Float, false, 0, 0/*NULL*/); 
+            //GL.VertexAttribPointer(
+        }
+
+        public void drawModel()
+        {
+            Shader.Bind(null);
             GL.Begin(BeginMode.Triangles);
 
             GL.Color3(System.Drawing.Color.Silver);
 
-            foreach (int x in faces)
+            for (int i = 0; i < vertexCount; i += 4)
             {
-                GL.Vertex3(vertices[x - 1]);
+                GL.Vertex3(vertices[i], vertices[i + 1], vertices[i + 2]);
+                
             }
             GL.End();
         }
+        
+        /*void draw()
+        {
+
+            glUniform1i(shaderProgram->getUniformLocation("textureMap0"), 0);
+            glUniform1i(shaderProgram->getUniformLocation("textureMap1"), 1);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, this->tex0);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, this->tex1);
+
+
+            //Uaktywnienie VAO i tym samym uaktywnienie predefiniowanych w tym VAO powišzań slotów atrybutów z tablicami z danymi
+            glBindVertexArray(this->vao);
+
+            //Narysowanie obiektu
+            glDrawArrays(GL_TRIANGLES, 0, this->vertexCount);
+
+            //Posprzštanie po sobie (niekonieczne w sumie jeżeli korzystamy z VAO dla każdego rysowanego obiektu)
+            glBindVertexArray(0);
+        }*/
+        public void drawColor(Shader param1)
+        {
+            GL.Uniform1(param1.GetUniformLocation("textureMap0"), 0);
+            GL.Uniform1(param1.GetUniformLocation("textureMap1"), 1);
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, tex0);
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, tex1);
+
+            GL.BindVertexArray(vao[0]);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, vertexCount);
+            GL.BindVertexArray(0);
+        }
+
+        public void drawDefault(Shader param1)
+        {
+            GL.Uniform1(param1.GetUniformLocation("textureMap0"), 0);
+            GL.Uniform1(param1.GetUniformLocation("textureMap1"), 1);
+            if (isSelected)
+            {
+                GL.ActiveTexture(TextureUnit.Texture0);
+                GL.BindTexture(TextureTarget.Texture2D, SELECTED_TEX);
+                GL.ActiveTexture(TextureUnit.Texture1);
+                GL.BindTexture(TextureTarget.Texture2D, SELECTED_TEX);
+            }
+            else
+            {
+                GL.ActiveTexture(TextureUnit.Texture0);
+                GL.BindTexture(TextureTarget.Texture2D, DEFAULT_TEX);
+                GL.ActiveTexture(TextureUnit.Texture1);
+                GL.BindTexture(TextureTarget.Texture2D, DEFAULT_TEX);
+            }
+            GL.BindVertexArray(vao[0]);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, vertexCount);
+            GL.BindVertexArray(0);
+        }
+
+        public void parseArrays(List<Vector3>vertices, List<Vector3> normals, List<Vector2>texCoords)
+        {
+            /*float[] tempVertices = new float[(int)(faces.Count)];
+            float[] tempNormals = new float[(int)(faces.Count)];
+            float[] tempTexCoords = new float[(int)((faces.Count/3)*2)];
+            */
+            List<float> tempVertices = new List<float>();
+            List<float> tempNormals = new List<float>();
+            List<float> tempTexCoords = new List<float>();
+
+            for (int i = 0; i < faces.Count; i += 3)
+            {
+                tempVertices.Add(vertices[faces[i]-1].X);
+                tempVertices.Add(vertices[faces[i]-1].Y);
+                tempVertices.Add(vertices[faces[i]-1].Z);
+                tempVertices.Add(1.0F);
+
+                tempTexCoords.Add(texCoords[faces[i + 1] - 1].X);
+                tempTexCoords.Add(texCoords[faces[i + 1] - 1].Y);
+
+                tempNormals.Add(normals[faces[i+2]-1].X);
+                tempNormals.Add(normals[faces[i + 2] - 1].Y);
+                tempNormals.Add(normals[faces[i + 2] - 1].Z);
+                tempNormals.Add(0.0F);
+            }
+
+            vertexCount = tempVertices.Count/4;
+            this.vertices = new float[tempVertices.Count];
+            for (int i = 0; i < tempVertices.Count; i++)
+            {
+                this.vertices[i] = tempVertices[i];
+            }
+
+            this.normals = new float[tempNormals.Count];
+            for (int i = 0; i < tempNormals.Count; i++)
+            {
+                this.normals[i] = tempNormals[i];
+            }
+
+            this.texCoords = new float[tempTexCoords.Count];
+            for (int i = 0; i < tempTexCoords.Count; i++)
+            {
+                this.texCoords[i] = tempTexCoords[i];
+            }
+
+        }
+        
     }
 
 
@@ -103,7 +313,9 @@ namespace Skeleton
             }
         }
 
-        private int Program = 0;
+        private int shaderProgram = 0;
+        public int vertexShader;
+        public int fragmentShader;
         private Dictionary<string, int> Variables = new Dictionary<string, int>();
 
         /// <summary>
@@ -156,16 +368,16 @@ namespace Skeleton
                 return false;
             }
 
-            if (Program > 0)
-                GL.DeleteProgram(Program);
+            if (shaderProgram > 0)
+                GL.DeleteProgram(shaderProgram);
 
             Variables.Clear();
 
-            Program = GL.CreateProgram();
+            shaderProgram = GL.CreateProgram();
 
             if (vertexSource != "")
             {
-                int vertexShader = GL.CreateShader(ShaderType.VertexShader);
+                vertexShader = GL.CreateShader(ShaderType.VertexShader);
                 GL.ShaderSource(vertexShader, vertexSource);
                 GL.CompileShader(vertexShader);
                 GL.GetShaderInfoLog(vertexShader, out info);
@@ -177,19 +389,19 @@ namespace Skeleton
                         Environment.NewLine + info + Environment.NewLine + "Status Code: " + status_code.ToString());
 
                     GL.DeleteShader(vertexShader);
-                    GL.DeleteProgram(Program);
-                    Program = 0;
+                    GL.DeleteProgram(shaderProgram);
+                    shaderProgram = 0;
 
                     return false;
                 }
 
-                GL.AttachShader(Program, vertexShader);
+                GL.AttachShader(shaderProgram, vertexShader);
                 GL.DeleteShader(vertexShader);
             }
 
             if (fragmentSource != "")
             {
-                int fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+                fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
                 GL.ShaderSource(fragmentShader, fragmentSource);
                 GL.CompileShader(fragmentShader);
                 GL.GetShaderInfoLog(fragmentShader, out info);
@@ -201,27 +413,27 @@ namespace Skeleton
                         Environment.NewLine + info + Environment.NewLine + "Status Code: " + status_code.ToString());
 
                     GL.DeleteShader(fragmentShader);
-                    GL.DeleteProgram(Program);
-                    Program = 0;
+                    GL.DeleteProgram(shaderProgram);
+                    shaderProgram = 0;
 
                     return false;
                 }
 
-                GL.AttachShader(Program, fragmentShader);
+                GL.AttachShader(shaderProgram, fragmentShader);
                 GL.DeleteShader(fragmentShader);
             }
 
-            GL.LinkProgram(Program);
-            GL.GetProgramInfoLog(Program, out info);
-            GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out status_code);
+            GL.LinkProgram(shaderProgram);
+            GL.GetProgramInfoLog(shaderProgram, out info);
+            GL.GetProgram(shaderProgram, GetProgramParameterName.LinkStatus, out status_code);
 
             if (status_code != 1)
             {
                 Console.WriteLine("Failed to Link Shader Program." +
                     Environment.NewLine + info + Environment.NewLine + "Status Code: " + status_code.ToString());
 
-                GL.DeleteProgram(Program);
-                Program = 0;
+                GL.DeleteProgram(shaderProgram);
+                shaderProgram = 0;
 
                 return false;
             }
@@ -234,7 +446,7 @@ namespace Skeleton
             if (Variables.ContainsKey(name))
                 return Variables[name];
 
-            int location = GL.GetUniformLocation(Program, name);
+            int location = GL.GetUniformLocation(shaderProgram, name);
 
             if (location != -1)
                 Variables.Add(name, location);
@@ -245,6 +457,16 @@ namespace Skeleton
             return location;
         }
 
+        public int GetAttribLocation(string name)
+        {
+            return GL.GetAttribLocation(shaderProgram,name);
+        }
+
+        public int GetUniformLocation(string name)
+        {
+            return GL.GetUniformLocation(shaderProgram, name);
+        }
+
         /// <summary>
         /// Change a value Variable of the Shader
         /// </summary>
@@ -252,9 +474,9 @@ namespace Skeleton
         /// <param name="x">Value</param>
         public void SetVariable(string name, float x)
         {
-            if (Program > 0)
+            if (shaderProgram > 0)
             {
-                GL.UseProgram(Program);
+                GL.UseProgram(shaderProgram);
 
                 int location = GetVariableLocation(name);
                 if (location != -1)
@@ -272,9 +494,9 @@ namespace Skeleton
         /// <param name="y">Second Vector Value</param>
         public void SetVariable(string name, float x, float y)
         {
-            if (Program > 0)
+            if (shaderProgram > 0)
             {
-                GL.UseProgram(Program);
+                GL.UseProgram(shaderProgram);
 
                 int location = GetVariableLocation(name);
                 if (location != -1)
@@ -293,9 +515,9 @@ namespace Skeleton
         /// <param name="z">Third Vector Value</param>
         public void SetVariable(string name, float x, float y, float z)
         {
-            if (Program > 0)
+            if (shaderProgram > 0)
             {
-                GL.UseProgram(Program);
+                GL.UseProgram(shaderProgram);
 
                 int location = GetVariableLocation(name);
                 if (location != -1)
@@ -315,9 +537,9 @@ namespace Skeleton
         /// <param name="w">Fourth Vector Value</param>
         public void SetVariable(string name, float x, float y, float z, float w)
         {
-            if (Program > 0)
+            if (shaderProgram > 0)
             {
-                GL.UseProgram(Program);
+                GL.UseProgram(shaderProgram);
 
                 int location = GetVariableLocation(name);
                 if (location != -1)
@@ -334,9 +556,9 @@ namespace Skeleton
         /// <param name="matrix">Matrix</param>
         public void SetVariable(string name, Matrix4 matrix)
         {
-            if (Program > 0)
+            if (shaderProgram > 0)
             {
-                GL.UseProgram(Program);
+                GL.UseProgram(shaderProgram);
 
                 int location = GetVariableLocation(name);
                 if (location != -1)
@@ -387,9 +609,9 @@ namespace Skeleton
         /// <param name="shader">Shader to bind</param>
         public static void Bind(Shader shader)
         {
-            if (shader != null && shader.Program > 0)
+            if (shader != null && shader.shaderProgram > 0)
             {
-                GL.UseProgram(shader.Program);
+                GL.UseProgram(shader.shaderProgram);
             }
             else
             {
@@ -399,8 +621,8 @@ namespace Skeleton
 
         public void Dispose()
         {
-            if (Program != 0)
-                GL.DeleteProgram(Program);
+            if (shaderProgram != 0)
+                GL.DeleteProgram(shaderProgram);
         }
     }
 }

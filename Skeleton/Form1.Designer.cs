@@ -43,6 +43,7 @@
             this.glControl.Size = new System.Drawing.Size(784, 564);
             this.glControl.TabIndex = 0;
             this.glControl.VSync = false;
+            this.glControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.glControl_MouseClick);
             // 
             // button1
             // 

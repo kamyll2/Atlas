@@ -32,27 +32,7 @@ namespace Skeleton
         }
 
         public Color readPixelColor(Point pixel) {
-                            /*
-                GL.GetInteger(GetPName.Viewport, viewport);
-                GL.SelectBuffer(BUFSIZE, selectBuffer);
-                GL.RenderMode(RenderingMode.Select);
-                GL.InitNames();
-                GL.PushName(0);
-                GL.MatrixMode(MatrixMode.Projection);
-                GL.PushMatrix();
-                GL.LoadIdentity();
-                Byte4 Pixel = new Byte4();
-                GL.ReadPixels(e.X, viewport[3] - e.Y, 1, 1, PixelFormat.Rgba, PixelType.UnsignedByte, ref Pixel);
-                uint SelectedTriangle = SelectedTriangle = Pixel.ToUInt32();
-                GL.Ortho(0, 3, 0, 3, 1, -1); // Bottom-left corner pixel has coordinate (0, 0)                 
-                DrawSquares(GL.RenderMode(RenderingMode.Select));
-                GL.MatrixMode(MatrixMode.Projection);
-                GL.PopMatrix();
-                GL.Flush();
-                hits = GL.RenderMode(RenderingMode.Render);
-                ProcessHits(hits, selectBuffer);
-                glControl1.SwapBuffers();
-                */
+
                 byte[] color = new byte[300];
                 int[] viewport = new int[4];
                 GL.GetInteger(GetPName.Viewport, viewport);
