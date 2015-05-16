@@ -1,0 +1,68 @@
+skull mózgoczaszka http://pl.wikipedia.org/wiki/M%C3%B3zgoczaszka
+jaw szczêka http://pl.wikipedia.org/wiki/Szcz%C4%99ka
+atlas dŸwigacz(atlas) http://pl.wikipedia.org/wiki/D%C5%BAwigacz
+axis obrotnik http://pl.wikipedia.org/wiki/Kr%C4%99g_obrotowy
+c3 krêg szyjny 3 http://pl.wikipedia.org/wiki/Kr%C4%99gi_szyjne
+c4 krêg szyjny 4 http://pl.wikipedia.org/wiki/Kr%C4%99gi_szyjne
+c5 krêg szyjny 5 http://pl.wikipedia.org/wiki/Kr%C4%99gi_szyjne
+c6 krêg szyjny 6 http://pl.wikipedia.org/wiki/Kr%C4%99gi_szyjne
+c7 krêg szyjny 7 http://pl.wikipedia.org/wiki/Kr%C4%99gi_szyjne
+t1 krêg piersiowy 1 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t2 krêg piersiowy 2 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t3 krêg piersiowy 3 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t4 krêg piersiowy 4 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t5 krêg piersiowy 5 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t6 krêg piersiowy 6 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t7 krêg piersiowy 7 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t8 krêg piersiowy 8 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t9 krêg piersiowy 9 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t10 krêg piersiowy 10 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t11 krêg piersiowy 11 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+t12 krêg piersiowy 12 http://pl.wikipedia.org/wiki/Kr%C4%99gi_piersiowe
+l1 krêg lêdŸwiowy 1 http://pl.wikipedia.org/wiki/Kr%C4%99gi_l%C4%99d%C5%BAwiowe
+l2 krêg lêdŸwiowy 2 http://pl.wikipedia.org/wiki/Kr%C4%99gi_l%C4%99d%C5%BAwiowe
+l3 krêg lêdŸwiowy 3 http://pl.wikipedia.org/wiki/Kr%C4%99gi_l%C4%99d%C5%BAwiowe
+l4 krêg lêdŸwiowy 4 http://pl.wikipedia.org/wiki/Kr%C4%99gi_l%C4%99d%C5%BAwiowe
+l5 krêg lêdŸwiowy 5 http://pl.wikipedia.org/wiki/Kr%C4%99gi_l%C4%99d%C5%BAwiowe
+sacrum koœæ krzy¿owa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_krzy%C5%BCowa
+coccygis koœæ gizuczna http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_guziczna
+lhand koœci d³oni http://pl.wikipedia.org/wiki/D%C5%82o%C5%84
+rhand koœci d³oni http://pl.wikipedia.org/wiki/D%C5%82o%C5%84
+lradius koœæ promieniowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_promieniowa
+rradius koœæ promieniowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_promieniowa
+lulna koœæ ³okciowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_%C5%82okciowa
+rulna koœæ ³okciowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_%C5%82okciowa
+lhumerus koœæ ramienna http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_ramienna
+rhumerus koœæ ramienna http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_ramienna
+lfoot koœci stopy http://pl.wikipedia.org/wiki/Stopa_(anatomia)
+rfoot koœci stopy http://pl.wikipedia.org/wiki/Stopa_(anatomia)
+lfibula koœæ strza³kowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_strza%C5%82kowa
+rfibula koœæ strza³kowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_strza%C5%82kowa
+ltibia koœæ piszczelowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_piszczelowa
+rtibia koœæ piszczelowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_piszczelowa
+lfemur koœæ udowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_udowa
+rfemur koœæ udowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_udowa
+lpatella rzepka http://pl.wikipedia.org/wiki/Rzepka
+rpatella rzepka http://pl.wikipedia.org/wiki/Rzepka
+pubis koœæ ³onowa http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_%C5%82onowa
+lcoxae koœæ miedniczna http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_miedniczna
+rcoxae koœæ miedniczna http://pl.wikipedia.org/wiki/Ko%C5%9B%C4%87_miedniczna
+lscapula ³opatka http://pl.wikipedia.org/wiki/%C5%81opatka
+rscapula ³opatka http://pl.wikipedia.org/wiki/%C5%81opatka
+sternum mostek http://pl.wikipedia.org/wiki/Mostek_(anatomia)
+lclavicula obojczyk http://pl.wikipedia.org/wiki/Obojczyk_(anatomia)
+rclavicula obojczyk http://pl.wikipedia.org/wiki/Obojczyk_(anatomia)
+sterum chrz¹stki ¿ebrowe http://en.wikipedia.org/wiki/Costal_cartilage
+rib1 ¿ebra para 1 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib2 ¿ebra para 2 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib3 ¿ebra para 3 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib4 ¿ebra para 4 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib5 ¿ebra para 5 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib6 ¿ebra para 6 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib7 ¿ebra para 7 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib8 ¿ebra para 8 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib9 ¿ebra para 9 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib10 ¿ebra para 10 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib11 ¿ebra para 11 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+rib12 ¿ebra para 12 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
+
