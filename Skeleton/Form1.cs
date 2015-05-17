@@ -30,20 +30,19 @@ namespace Skeleton
     //[Example("Simple GLControl Game Loop", ExampleCategory.OpenTK, "GLControl", 2, Documentation = "GLControlGameLoop")]
     public partial class GameLoopForm : Form
     {
-        static float angle = 0.0f;
         List<Vector3> vertices = new List<Vector3>();
         List<Vector2> texCoords = new List<Vector2>();
         List<Vector3> normals = new List<Vector3>();
 
-        List<Model> Models = new List<Model>();
         int displayType = 0;
-        
+        private bool colorSelectionScheduled = false;
         MouseHelper mouseHelper = new MouseHelper();
         
         Shader shader;
         string vertexShader;
         string fragmentShader;
-        private bool colorSelectionScheduled = false;
+        
+        List<Model> Models = new List<Model>();
         Point pixel;
         Model selectedModel;
         string baseUrl = "http://pl.wikipedia.org/wiki/Uk%C5%82ad_kostny_cz%C5%82owieka";
@@ -63,72 +62,51 @@ namespace Skeleton
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            Application.Idle += Application_Idle;
+
             display.Text = "gray";
             boneNamePL.Text = "none";
             boneNameENG.Text = "none";
             FileReader.getInstance().loadData();
 
             glControl.KeyDown += new KeyEventHandler(glControl_KeyDown);
-            glControl.KeyUp += new KeyEventHandler(glControl_KeyUp);
             glControl.Resize += new EventHandler(glControl_Resize);
             glControl.Paint += new PaintEventHandler(glControl_Paint);
-
-            Text =
-                GL.GetString(StringName.Vendor) + " " +
-                GL.GetString(StringName.Renderer) + " " +
-                GL.GetString(StringName.Version);
-
             GL.ClearColor(Color.MidnightBlue);
             GL.Enable(EnableCap.DepthTest);
-            
-            Application.Idle += Application_Idle;
-
-            // Ensure that the viewport and projection matrix are set correctly.
             glControl_Resize(glControl, EventArgs.Empty);
 
-            //glEnable(GL_LIGHTING);
-            //glEnable(GL_LIGHT0);
-            //glEnable(GL_DEPTH_TEST);
-
-            //GL.Enable(EnableCap.Lighting);
-            //GL.Enable(EnableCap.Light0);
-            //GL.Enable(EnableCap.DepthTest);
-
+            /*Text =
+                GL.GetString(StringName.Vendor) + " " +
+                GL.GetString(StringName.Renderer) + " " +
+                GL.GetString(StringName.Version);*/
+            Text = "Skeleton";
             
             vertexShader = System.IO.File.ReadAllText("..\\..\\Shaders\\vshader.txt");
             fragmentShader = System.IO.File.ReadAllText("..\\..\\Shaders\\fshader.txt");
             shader = new Shader(vertexShader, fragmentShader);
-            //texture = Load(new Bitmap(Image.FromFile("D:\\texture.png")));
+
             Bitmap x1 = new Bitmap(1,1);
             x1.SetPixel(0, 0, Color.Gray);
             Model.DEFAULT_TEX = Load(x1);
+
             x1.SetPixel(0, 0, Color.Green);
             Model.SELECTED_TEX = Load(x1);
+
             int argb = 0;
             foreach (Model x in Models)
             //for(int i=0;i<68;i++)
             {
-                
                 //Model x = Models[i];
                 x.setupVBO();
                 x.setupVAO(shader);
                 x.color = Color.FromArgb(argb);
                 argb += 200000;
                 x1.SetPixel(0, 0, x.color);
-                x.tex0=Load(x1);
+                x.tex0 = Load(x1);
                 x.tex1 = Load(x1);
-                //String name = x.name;
-                //Console.WriteLine(x.name);
                 x.namePL = FileReader.getInstance().getPLNameFromBoneName(x.name);
                 x.wikipediaURL = FileReader.getInstance().getUrlFromBoneName(x.name);
-            }
-        }
-
-        void glControl_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.A)
-            {
-                displayType = displayType == 0 ? 1 : 0;
             }
         }
 
@@ -138,11 +116,11 @@ namespace Skeleton
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            /*foreach (Model x in Models)
+            foreach (Model x in Models)
             {
                 x.freeVAO();
                 x.freeVBO();
-            }*/
+            }
             Application.Idle -= Application_Idle;
             Shader.Bind(null);
             base.OnClosing(e);
@@ -209,24 +187,14 @@ namespace Skeleton
         private void Render()
         {
             Matrix4 matV = Matrix4.LookAt(0, 0, 30, 0, -1, 0, 0, 1, 0);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref matV);
-            
-            //GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
-            angle += 0.5f;
             
             Matrix4 matP = Matrix4.Perspective(-50.0F,glControl.Width/glControl.Height,1.0F,50.0F);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             MouseState mouse = Mouse.GetState();
-
             mouseHelper.updateMouseParams(mouse);
-
-            //boneNameENG.Text = mouse.Wheel.ToString();
             
-            //matM=glm::translate(matM,glm::vec3(0.0,0.0,odleglosc));
-            //GL.MatrixMode(MatrixMode.Projection);
 
                 Matrix4 matM = Matrix4.Identity;
                 //matM = matM * Matrix4.Scale(0.1F, 0.1F, 0.1F);
@@ -373,6 +341,9 @@ namespace Skeleton
             {
                 x.parseArrays(vertices, normals, texCoords);
             }
+            vertices.Clear();
+            normals.Clear();
+            texCoords.Clear();
         }
 
         private void button2_Click(object sender, EventArgs e)

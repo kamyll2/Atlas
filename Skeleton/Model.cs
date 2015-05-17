@@ -74,13 +74,6 @@ namespace Skeleton
         public String wikipediaURL;
         public List<int> faces;
 
-        /*void setupVBO()
-        {
-            this->bufVertices = makeBuffer(this->vertices, this->vertexCount, sizeof(float) * 4); //Współrzędne wierzchołków
-            //	bufColors=makeBuffer(colors, vertexCount, sizeof(float)*4);//Kolory wierzchołków
-            this->bufNormals = makeBuffer(this->normals, this->vertexCount, sizeof(float) * 4);//Wektory normalne wierzchołków
-            this->bufTexCoords = makeBuffer(this->texCoords, vertexCount, sizeof(float) * 2);//Wektory normalne wierzchołków
-        }*/
         public void setupVBO()
         {
             bufVertices = makeBuffer(vertices, vertexCount, sizeof(float) * 4);
@@ -88,20 +81,6 @@ namespace Skeleton
             bufTexCoords = makeBuffer(texCoords, vertexCount, sizeof(float) * 2);
         }
 
-        /*void setupVAO()
-        {
-            //Wygeneruj uchwyt na VAO i zapisz go do zmiennej globalnej
-            glGenVertexArrays(1, &(this->vao));
-
-            //Uaktywnij nowo utworzony VAO
-            glBindVertexArray(this->vao);
-
-            assignVBOtoAttribute("vertex", this->bufVertices, 4); //"vertex" odnosi się do deklaracji "in vec4 vertex;" w vertex shaderze
-            //	assignVBOtoAttribute("color",bufColors,4); //"color" odnosi się do deklaracji "in vec4 color;" w vertex shaderze
-            assignVBOtoAttribute("normal", this->bufNormals, 4); //"normal" odnosi się do deklaracji "in vec4 normal;" w vertex shaderze
-            assignVBOtoAttribute("texCoord", bufTexCoords, 2); //"texCoord" odnosi się do deklaracji "in vec2 texCoord;" w vertex shaderze
-            glBindVertexArray(0);
-        }*/
         public void setupVAO(Shader shaderProgram)
         {
             GL.GenVertexArrays(1, vao);
@@ -135,16 +114,6 @@ namespace Skeleton
             faces = new List<int>();
         }
 
-        /*GLuint makeBuffer(void* data, int vertexCount, int vertexSize)
-        {
-            GLuint handle;
-
-            glGenBuffers(1, &handle);//Wygeneruj uchwyt na Vertex Buffer Object (VBO), który będzie zawierał tablicę danych
-            glBindBuffer(GL_ARRAY_BUFFER, handle);  //Uaktywnij wygenerowany uchwyt VBO 
-            glBufferData(GL_ARRAY_BUFFER, vertexCount * vertexSize, data, GL_STATIC_DRAW);//Wgraj tablicę do VBO
-
-            return handle;
-        }*/
         public int makeBuffer(float[] data, int vertexCount, int vertexSize)
         {
             int[] handle = new int[1];
@@ -154,20 +123,13 @@ namespace Skeleton
             return handle[0];
         }
 
-        /*void assignVBOtoAttribute(char* attributeName, GLuint bufVBO, int variableSize)
-        {
-            GLuint location = shaderProgram->getAttribLocation(attributeName); //Pobierz numery slotów dla atrybutu
-            glBindBuffer(GL_ARRAY_BUFFER, bufVBO);  //Uaktywnij uchwyt VBO 
-            glEnableVertexAttribArray(location); //Włšcz używanie atrybutu o numerze slotu zapisanym w zmiennej location
-            glVertexAttribPointer(location, variableSize, GL_FLOAT, GL_FALSE, 0, NULL); //Dane do slotu location majš być brane z aktywnego VBO
-        }*/
+
         public void assignVBOtoAttribute(string attributeName, int bufVBO, int variableSize, Shader shaderProgram)
         {
             int location = shaderProgram.GetAttribLocation(attributeName);
             GL.BindBuffer(BufferTarget.ArrayBuffer, bufVBO);
             GL.EnableVertexAttribArray(location);
             GL.VertexAttribPointer(location, variableSize, VertexAttribPointerType.Float, false, 0, 0/*NULL*/); 
-            //GL.VertexAttribPointer(
         }
 
         public void drawModel()
@@ -185,27 +147,6 @@ namespace Skeleton
             GL.End();
         }
         
-        /*void draw()
-        {
-
-            glUniform1i(shaderProgram->getUniformLocation("textureMap0"), 0);
-            glUniform1i(shaderProgram->getUniformLocation("textureMap1"), 1);
-
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, this->tex0);
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, this->tex1);
-
-
-            //Uaktywnienie VAO i tym samym uaktywnienie predefiniowanych w tym VAO powišzań slotów atrybutów z tablicami z danymi
-            glBindVertexArray(this->vao);
-
-            //Narysowanie obiektu
-            glDrawArrays(GL_TRIANGLES, 0, this->vertexCount);
-
-            //Posprzštanie po sobie (niekonieczne w sumie jeżeli korzystamy z VAO dla każdego rysowanego obiektu)
-            glBindVertexArray(0);
-        }*/
         public void drawColor(Shader param1)
         {
             GL.Uniform1(param1.GetUniformLocation("textureMap0"), 0);
@@ -245,10 +186,6 @@ namespace Skeleton
 
         public void parseArrays(List<Vector3>vertices, List<Vector3> normals, List<Vector2>texCoords)
         {
-            /*float[] tempVertices = new float[(int)(faces.Count)];
-            float[] tempNormals = new float[(int)(faces.Count)];
-            float[] tempTexCoords = new float[(int)((faces.Count/3)*2)];
-            */
             List<float> tempVertices = new List<float>();
             List<float> tempNormals = new List<float>();
             List<float> tempTexCoords = new List<float>();
