@@ -32,13 +32,13 @@
             this.buttonChangeType = new System.Windows.Forms.Button();
             this.boneNameENG = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.boneNamePL = new System.Windows.Forms.TextBox();
-            this.display = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.wikipediaButton = new System.Windows.Forms.Button();
-            this.hideOthersButton = new System.Windows.Forms.Button();
             this.resetPositionButton = new System.Windows.Forms.Button();
+            this.hideOthersButton = new System.Windows.Forms.Button();
+            this.wikipediaButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.display = new System.Windows.Forms.TextBox();
+            this.boneNamePL = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,47 +87,14 @@
             this.panel1.Size = new System.Drawing.Size(127, 564);
             this.panel1.TabIndex = 4;
             // 
-            // boneNamePL
+            // resetPositionButton
             // 
-            this.boneNamePL.Location = new System.Drawing.Point(15, 255);
-            this.boneNamePL.Name = "boneNamePL";
-            this.boneNamePL.Size = new System.Drawing.Size(100, 20);
-            this.boneNamePL.TabIndex = 4;
-            // 
-            // display
-            // 
-            this.display.Enabled = false;
-            this.display.Location = new System.Drawing.Point(15, 61);
-            this.display.Name = "display";
-            this.display.Size = new System.Drawing.Size(100, 20);
-            this.display.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 42);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "display type:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 213);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "bone name:";
-            // 
-            // wikipediaButton
-            // 
-            this.wikipediaButton.Location = new System.Drawing.Point(15, 281);
-            this.wikipediaButton.Name = "wikipediaButton";
-            this.wikipediaButton.Size = new System.Drawing.Size(100, 24);
-            this.wikipediaButton.TabIndex = 8;
-            this.wikipediaButton.Text = "Wikipedia";
-            this.wikipediaButton.UseVisualStyleBackColor = true;
+            this.resetPositionButton.Location = new System.Drawing.Point(15, 428);
+            this.resetPositionButton.Name = "resetPositionButton";
+            this.resetPositionButton.Size = new System.Drawing.Size(100, 23);
+            this.resetPositionButton.TabIndex = 10;
+            this.resetPositionButton.Text = "Reset Position";
+            this.resetPositionButton.UseVisualStyleBackColor = true;
             // 
             // hideOthersButton
             // 
@@ -138,14 +105,48 @@
             this.hideOthersButton.Text = "Hide Others";
             this.hideOthersButton.UseVisualStyleBackColor = true;
             // 
-            // resetPositionButton
+            // wikipediaButton
             // 
-            this.resetPositionButton.Location = new System.Drawing.Point(15, 428);
-            this.resetPositionButton.Name = "resetPositionButton";
-            this.resetPositionButton.Size = new System.Drawing.Size(100, 23);
-            this.resetPositionButton.TabIndex = 10;
-            this.resetPositionButton.Text = "Reset Position";
-            this.resetPositionButton.UseVisualStyleBackColor = true;
+            this.wikipediaButton.Location = new System.Drawing.Point(15, 281);
+            this.wikipediaButton.Name = "wikipediaButton";
+            this.wikipediaButton.Size = new System.Drawing.Size(100, 24);
+            this.wikipediaButton.TabIndex = 8;
+            this.wikipediaButton.Text = "Wikipedia";
+            this.wikipediaButton.UseVisualStyleBackColor = true;
+            this.wikipediaButton.Click += new System.EventHandler(this.wikipediaButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 213);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "bone name:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 42);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "display type:";
+            // 
+            // display
+            // 
+            this.display.Enabled = false;
+            this.display.Location = new System.Drawing.Point(15, 61);
+            this.display.Name = "display";
+            this.display.Size = new System.Drawing.Size(100, 20);
+            this.display.TabIndex = 5;
+            // 
+            // boneNamePL
+            // 
+            this.boneNamePL.Location = new System.Drawing.Point(15, 255);
+            this.boneNamePL.Name = "boneNamePL";
+            this.boneNamePL.Size = new System.Drawing.Size(100, 20);
+            this.boneNamePL.TabIndex = 4;
             // 
             // GameLoopForm
             // 

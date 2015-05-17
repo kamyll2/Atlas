@@ -45,6 +45,8 @@ namespace Skeleton
         string fragmentShader;
         private bool colorSelectionScheduled = false;
         Point pixel;
+        Model selectedModel;
+        string baseUrl = "http://pl.wikipedia.org/wiki/Uk%C5%82ad_kostny_cz%C5%82owieka";
 
         int texture;
 
@@ -62,6 +64,10 @@ namespace Skeleton
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            display.Text = "gray";
+            boneNamePL.Text = "none";
+            boneNameENG.Text = "none";
+            FileReader.getInstance().loadData();
 
             glControl.KeyDown += new KeyEventHandler(glControl_KeyDown);
             glControl.KeyUp += new KeyEventHandler(glControl_KeyUp);
@@ -112,9 +118,11 @@ namespace Skeleton
                 x1.SetPixel(0, 0, x.color);
                 x.tex0=Load(x1);
                 x.tex1 = Load(x1);
+                //String name = x.name;
+                //Console.WriteLine(x.name);
+                x.namePL = FileReader.getInstance().getPLNameFromBoneName(x.name);
+                x.wikipediaURL = FileReader.getInstance().getUrlFromBoneName(x.name);
             }
-            Models[15].isSelected = true;
-            
         }
 
         void glControl_KeyUp(object sender, KeyEventArgs e)
@@ -216,7 +224,7 @@ namespace Skeleton
 
             mouseHelper.updateMouseParams(mouse);
 
-            boneNameENG.Text = mouse.Wheel.ToString();
+            //boneNameENG.Text = mouse.Wheel.ToString();
             
             //matM=glm::translate(matM,glm::vec3(0.0,0.0,odleglosc));
             //GL.MatrixMode(MatrixMode.Projection);
@@ -240,7 +248,6 @@ namespace Skeleton
                     displayType = 1;
                     shader.SetVariable("type1", (float)displayType);
                     Shader.Bind(shader);
-                    //colorSelectionScheduled = false;
                     DrawCube();
                     changeSelected();
                     displayType = temp;
@@ -373,6 +380,7 @@ namespace Skeleton
         private void button2_Click(object sender, EventArgs e)
         {
             displayType = displayType==0 ? 1:0;
+            display.Text = displayType == 0 ? "gray" : "colors";
         }
 
         private int Load(Bitmap bitmap, bool IsRepeated = false, bool IsSmooth = true)
@@ -426,6 +434,9 @@ namespace Skeleton
                 if (model.color.ToArgb() == pickedColorArgb)
                 {
                     model.isSelected = true;
+                    boneNameENG.Text = model.name;
+                    boneNamePL.Text = model.namePL;
+                    selectedModel = model;
                     foreach (Model m in Models)
                     {
                         if (!m.name.Equals(model.name))
@@ -436,6 +447,18 @@ namespace Skeleton
                 }
             }
             colorSelectionScheduled = false;
+        }
+
+        private void wikipediaButton_Click(object sender, EventArgs e)
+        {
+            if (selectedModel == null)
+            {
+                System.Diagnostics.Process.Start(baseUrl);
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(selectedModel.wikipediaURL);
+            }
         }
     }
 }

@@ -52,6 +52,7 @@ rscapula ³opatka http://pl.wikipedia.org/wiki/%C5%81opatka
 sternum mostek http://pl.wikipedia.org/wiki/Mostek_(anatomia)
 lclavicula obojczyk http://pl.wikipedia.org/wiki/Obojczyk_(anatomia)
 rclavicula obojczyk http://pl.wikipedia.org/wiki/Obojczyk_(anatomia)
+sternum01 mostek http://pl.wikipedia.org/wiki/Mostek_cz%C5%82owieka
 sterum chrz¹stki ¿ebrowe http://en.wikipedia.org/wiki/Costal_cartilage
 rib1 ¿ebra para 1 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)
 rib2 ¿ebra para 2 http://pl.wikipedia.org/wiki/%C5%BBebra_(anatomia)

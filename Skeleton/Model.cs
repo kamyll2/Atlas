@@ -70,6 +70,8 @@ namespace Skeleton
         int vertexCount;
 
         public string name;
+        public String namePL;
+        public String wikipediaURL;
         public List<int> faces;
 
         /*void setupVBO()
