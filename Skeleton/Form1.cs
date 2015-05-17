@@ -413,7 +413,6 @@ namespace Skeleton
             {
                 pixel = new Point(e.X, e.Y);
                 colorSelectionScheduled = true;
-                Console.WriteLine("CLICKED");
             }
         }
 
