@@ -36,8 +36,8 @@ namespace Skeleton
         List<Vector3> normals = new List<Vector3>();
 
         List<Model> Models = new List<Model>();
-        int modelToShow = 0;
         int displayType = 0;
+        
         MouseHelper mouseHelper = new MouseHelper();
         
         Shader shader;
@@ -48,7 +48,6 @@ namespace Skeleton
         Model selectedModel;
         string baseUrl = "http://pl.wikipedia.org/wiki/Uk%C5%82ad_kostny_cz%C5%82owieka";
 
-        int texture;
 
         #region --- Constructor ---
 
@@ -277,6 +276,10 @@ namespace Skeleton
                     x.drawColor(shader);
                 }
             }
+            else if(displayType==3)
+            {
+                selectedModel.drawDefault(shader);
+            }
             else
             {
                 foreach (Model x in Models)
@@ -309,11 +312,6 @@ namespace Skeleton
         }
 
         #endregion
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            modelToShow++;
-        }
 
         public void readObjVertices(string path)
         {
@@ -458,6 +456,27 @@ namespace Skeleton
             else
             {
                 System.Diagnostics.Process.Start(selectedModel.wikipediaURL);
+            }
+        }
+
+        private void resetPositionButton_Click(object sender, EventArgs e)
+        {
+            mouseHelper.mouseWHEELstate = 0;
+            mouseHelper.rotX = 0;
+            mouseHelper.rotY = 0;
+        }
+
+        private void hideOthersButton_Click(object sender, EventArgs e)
+        {
+            if (hideOthersButton.Text == "Hide Others" && selectedModel!=null)
+            {
+                displayType = 3;
+                hideOthersButton.Text = "Show All";
+            }
+            else
+            {
+                displayType = 0;
+                hideOthersButton.Text = "Hide Others";
             }
         }
     }

@@ -95,6 +95,7 @@
             this.resetPositionButton.TabIndex = 10;
             this.resetPositionButton.Text = "Reset Position";
             this.resetPositionButton.UseVisualStyleBackColor = true;
+            this.resetPositionButton.Click += new System.EventHandler(this.resetPositionButton_Click);
             // 
             // hideOthersButton
             // 
@@ -104,6 +105,7 @@
             this.hideOthersButton.TabIndex = 9;
             this.hideOthersButton.Text = "Hide Others";
             this.hideOthersButton.UseVisualStyleBackColor = true;
+            this.hideOthersButton.Click += new System.EventHandler(this.hideOthersButton_Click);
             // 
             // wikipediaButton
             // 

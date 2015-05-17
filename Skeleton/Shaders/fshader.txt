@@ -35,10 +35,10 @@ void main(void) {
 	float nl=max(dot(ml,mn),0);
 	float rv=pow(max(dot(mr,mv),0),shininess);
 	
-	if(type1==0.0){
-		pixelColor=La*Ma+Ld*Md*vec4(nl,nl,nl,1)+Ls*Ms*vec4(rv,rv,rv,0);
+	if(type1==1.0){
+		pixelColor = Ms;
 	}
 	else{
-		pixelColor = Ms;
+		pixelColor=La*Ma+Ld*Md*vec4(nl,nl,nl,1)+Ls*Ms*vec4(rv,rv,rv,0);
 	}
 }
