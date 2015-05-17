@@ -29,11 +29,16 @@
         private void InitializeComponent()
         {
             this.glControl = new OpenTK.GLControl();
-            this.buttonNextModel = new System.Windows.Forms.Button();
             this.buttonChangeType = new System.Windows.Forms.Button();
             this.boneNameENG = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.boneNamePL = new System.Windows.Forms.TextBox();
+            this.display = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.wikipediaButton = new System.Windows.Forms.Button();
+            this.hideOthersButton = new System.Windows.Forms.Button();
+            this.resetPositionButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,21 +53,11 @@
             this.glControl.VSync = false;
             this.glControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.glControl_MouseClick);
             // 
-            // buttonNextModel
-            // 
-            this.buttonNextModel.Location = new System.Drawing.Point(31, 12);
-            this.buttonNextModel.Name = "buttonNextModel";
-            this.buttonNextModel.Size = new System.Drawing.Size(75, 23);
-            this.buttonNextModel.TabIndex = 1;
-            this.buttonNextModel.Text = "NextModel";
-            this.buttonNextModel.UseVisualStyleBackColor = true;
-            this.buttonNextModel.Click += new System.EventHandler(this.button1_Click);
-            // 
             // buttonChangeType
             // 
-            this.buttonChangeType.Location = new System.Drawing.Point(31, 41);
+            this.buttonChangeType.Location = new System.Drawing.Point(15, 87);
             this.buttonChangeType.Name = "buttonChangeType";
-            this.buttonChangeType.Size = new System.Drawing.Size(75, 23);
+            this.buttonChangeType.Size = new System.Drawing.Size(100, 24);
             this.buttonChangeType.TabIndex = 2;
             this.buttonChangeType.Text = "ChangeType";
             this.buttonChangeType.UseVisualStyleBackColor = true;
@@ -70,15 +65,20 @@
             // 
             // boneNameENG
             // 
-            this.boneNameENG.Location = new System.Drawing.Point(15, 70);
+            this.boneNameENG.Location = new System.Drawing.Point(15, 229);
             this.boneNameENG.Name = "boneNameENG";
             this.boneNameENG.Size = new System.Drawing.Size(100, 20);
             this.boneNameENG.TabIndex = 3;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.resetPositionButton);
+            this.panel1.Controls.Add(this.hideOthersButton);
+            this.panel1.Controls.Add(this.wikipediaButton);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.display);
             this.panel1.Controls.Add(this.boneNamePL);
-            this.panel1.Controls.Add(this.buttonNextModel);
             this.panel1.Controls.Add(this.boneNameENG);
             this.panel1.Controls.Add(this.buttonChangeType);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
@@ -89,10 +89,63 @@
             // 
             // boneNamePL
             // 
-            this.boneNamePL.Location = new System.Drawing.Point(15, 162);
+            this.boneNamePL.Location = new System.Drawing.Point(15, 255);
             this.boneNamePL.Name = "boneNamePL";
             this.boneNamePL.Size = new System.Drawing.Size(100, 20);
             this.boneNamePL.TabIndex = 4;
+            // 
+            // display
+            // 
+            this.display.Enabled = false;
+            this.display.Location = new System.Drawing.Point(15, 61);
+            this.display.Name = "display";
+            this.display.Size = new System.Drawing.Size(100, 20);
+            this.display.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 42);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "display type:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 213);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "bone name:";
+            // 
+            // wikipediaButton
+            // 
+            this.wikipediaButton.Location = new System.Drawing.Point(15, 281);
+            this.wikipediaButton.Name = "wikipediaButton";
+            this.wikipediaButton.Size = new System.Drawing.Size(100, 24);
+            this.wikipediaButton.TabIndex = 8;
+            this.wikipediaButton.Text = "Wikipedia";
+            this.wikipediaButton.UseVisualStyleBackColor = true;
+            // 
+            // hideOthersButton
+            // 
+            this.hideOthersButton.Location = new System.Drawing.Point(15, 399);
+            this.hideOthersButton.Name = "hideOthersButton";
+            this.hideOthersButton.Size = new System.Drawing.Size(100, 23);
+            this.hideOthersButton.TabIndex = 9;
+            this.hideOthersButton.Text = "Hide Others";
+            this.hideOthersButton.UseVisualStyleBackColor = true;
+            // 
+            // resetPositionButton
+            // 
+            this.resetPositionButton.Location = new System.Drawing.Point(15, 428);
+            this.resetPositionButton.Name = "resetPositionButton";
+            this.resetPositionButton.Size = new System.Drawing.Size(100, 23);
+            this.resetPositionButton.TabIndex = 10;
+            this.resetPositionButton.Text = "Reset Position";
+            this.resetPositionButton.UseVisualStyleBackColor = true;
             // 
             // GameLoopForm
             // 
@@ -112,10 +165,15 @@
         #endregion
 
         private OpenTK.GLControl glControl;
-        private System.Windows.Forms.Button buttonNextModel;
         private System.Windows.Forms.Button buttonChangeType;
         private System.Windows.Forms.TextBox boneNameENG;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox boneNamePL;
+        private System.Windows.Forms.Button resetPositionButton;
+        private System.Windows.Forms.Button hideOthersButton;
+        private System.Windows.Forms.Button wikipediaButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox display;
     }
 }

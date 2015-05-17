@@ -37,12 +37,14 @@ namespace Skeleton
 
         List<Model> Models = new List<Model>();
         int modelToShow = 0;
-        int displayType = 1;
+        int displayType = 0;
         MouseHelper mouseHelper = new MouseHelper();
         
         Shader shader;
         string vertexShader;
         string fragmentShader;
+        private bool colorSelectionScheduled = false;
+        Point pixel;
 
         int texture;
 
@@ -228,18 +230,30 @@ namespace Skeleton
                 //matM = matM * Matrix4.Translation(0.0f, 0.0f, 0.1F * mouseHelper.mouseWHEELstate);
                 matM = matM * Matrix4.CreateTranslation(0.0f, 0.0f, 0.3f*mouseHelper.mouseWHEELstate);
 
-
-                shader.SetVariable("type1", (float)displayType);
                 shader.SetVariable("V", matV);
                 shader.SetVariable("P", matP);
                 shader.SetVariable("M", matM);
 
-                Shader.Bind(shader);
-                DrawCube();
-            
+                if (colorSelectionScheduled)
+                {
+                    int temp = displayType;
+                    displayType = 1;
+                    shader.SetVariable("type1", (float)displayType);
+                    Shader.Bind(shader);
+                    //colorSelectionScheduled = false;
+                    DrawCube();
+                    changeSelected();
+                    displayType = temp;
+                }
+                else
+                {
+                    shader.SetVariable("type1", (float)displayType);
+                    Shader.Bind(shader);
+                    DrawCube();
+                    glControl.SwapBuffers();
+                }
 
-            
-            glControl.SwapBuffers();
+
         }
         
         #endregion
@@ -397,8 +411,32 @@ namespace Skeleton
         {
             if (e.Button == MouseButtons.Left)
             {
-                Console.WriteLine(ColorPicker.getInstance().readPixelColor(new Point(e.X, e.Y)));
+                pixel = new Point(e.X, e.Y);
+                colorSelectionScheduled = true;
+                Console.WriteLine("CLICKED");
             }
+        }
+
+        private void changeSelected()
+        {
+            Color pickedColor = ColorPicker.getInstance().readPixelColor(new Point(pixel.X, pixel.Y));
+            pickedColor = Color.FromArgb(0, pickedColor.R, pickedColor.G, pickedColor.B);
+            int pickedColorArgb = pickedColor.ToArgb();
+            foreach (Model model in Models)
+            {
+                if (model.color.ToArgb() == pickedColorArgb)
+                {
+                    model.isSelected = true;
+                    foreach (Model m in Models)
+                    {
+                        if (!m.name.Equals(model.name))
+                        {
+                            m.isSelected = false;
+                        }
+                    }
+                }
+            }
+            colorSelectionScheduled = false;
         }
     }
 }

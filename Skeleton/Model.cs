@@ -21,6 +21,7 @@ namespace Skeleton
         public bool isMMBDown;
         public float mouseWHEELstate;
 
+
         public MouseHelper()
         {
             rotX = 0.0F;
